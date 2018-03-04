@@ -23,13 +23,11 @@ public class Diplomci
 
 	static
 	{
-		try
-		{
-			Class.forName("com.ibm.db2.jcc.DB2Driver");
+		try{
+		  Class.forName("com.ibm.db2.jcc.DB2Driver");
 		}
-		catch (Exception e) 
-		{
-			e.printStackTrace();
+		catch (Exception e) {
+		  e.printStackTrace();
 		}
 	}
 
@@ -38,47 +36,47 @@ public class Diplomci
 	public static void main(String[] args) throws SQLException
 	{
 		
-		//Kreiramo prvi panel
-        final JFrame frame1 = new JFrame();
-		frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame1.setTitle("V03P1");
+	  //Kreiramo prvi panel
+	  final JFrame frame1 = new JFrame();
+	  frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	  frame1.setTitle("Pretraga studenata");
 		
-		final JPanel panel1 = new JPanel();
-		final JLabel label1 = new JLabel("Unesite godinu upisa: ");
-		final JTextField text1 = new JTextField(15);
-		text1.setToolTipText("Unesite godinu upisa, npr. 2010");
-		final JLabel label2 = new JLabel("Unesite indeks studenta: ");
-		final JLabel errlabel = new JLabel("                         ");
-		errlabel.setFont(new Font("Serif", Font.ITALIC, 14));
-		errlabel.setForeground(Color.red);
-		final JTextField text2 = new JTextField(15);
-		text2.setToolTipText("Unesite indeks, npr. 20100123");
-		final JButton dugme1 = new JButton();
-		dugme1.setText("Potvrdi");
+	  final JPanel panel1 = new JPanel();
+	  final JLabel label1 = new JLabel("Unesite godinu upisa: ");
+	  final JTextField text1 = new JTextField(15);
+	  text1.setToolTipText("Unesite godinu upisa, npr. 2010");
+	  final JLabel label2 = new JLabel("Unesite indeks studenta: ");
+	  final JLabel errlabel = new JLabel("                         ");
+	  errlabel.setFont(new Font("Serif", Font.ITALIC, 14));
+	  errlabel.setForeground(Color.red);
+	  final JTextField text2 = new JTextField(15);
+	  text2.setToolTipText("Unesite indeks, npr. 20100123");
+	  final JButton dugme1 = new JButton();
+	  dugme1.setText("Potvrdi");
         
-		//Postavljamo logo fakulteta kao labelu 
-		frame1.setLayout(new BorderLayout());
-	    JLabel logo = new JLabel(new ImageIcon("logomatf.jpg"));
-	    logo.setSize(50, 50);
-	    logo.setLayout(new FlowLayout());
-	    frame1.add(logo);
+	  //Postavljamo logo fakulteta kao labelu 
+	  frame1.setLayout(new BorderLayout());
+	  JLabel logo = new JLabel(new ImageIcon("logomatf.jpg"));
+	  logo.setSize(50, 50);
+	  logo.setLayout(new FlowLayout());
+	  frame1.add(logo);
 	     
 		
-        panel1.add(label1);
-        panel1.add(text1);
-        panel1.add(label2);
-        panel1.add(text2);
-        panel1.add(dugme1);
-        panel1.add(errlabel);
-        panel1.add(logo);
-        panel1.setBackground(Color.white);
+	  panel1.add(label1);
+	  panel1.add(text1);
+	  panel1.add(label2);
+	  panel1.add(text2);
+	  panel1.add(dugme1);
+	  panel1.add(errlabel);
+	  panel1.add(logo);
+	  panel1.setBackground(Color.white);
         
-        frame1.setSize(195, 300);
-        panel1.setSize(195, 300);
-        frame1.add(panel1);
-        frame1.setResizable(false);
-        frame1.setVisible(true);
-        frame1.setLocationRelativeTo(null);
+	  frame1.setSize(195, 300);
+	  panel1.setSize(195, 300);
+	  frame1.add(panel1);
+	  frame1.setResizable(false);
+	  frame1.setVisible(true);
+	  frame1.setLocationRelativeTo(null);
         
        
         
@@ -142,7 +140,7 @@ public class Diplomci
 
 			
 			//Cuvamo podatke koji su uneti preko panela
-	        String god = text1.getText();
+			String god = text1.getText();
 			String ind = text2.getText();
 			int godint = Integer.parseInt(god);
 			int indint = Integer.parseInt(ind);
@@ -171,28 +169,28 @@ public class Diplomci
 			PreparedStatement ps1 = con.prepareStatement(ostaliStudenti);
 			
 			//Sada ce figurisati podaci koji su uneti preko panela
-	        ps.setInt(1, Integer.parseInt(god));
-	        ps.setInt(2, Integer.parseInt(ind));
-	        ps1.setInt(1, Integer.parseInt(ind));
-	        ps1.setInt(2, Integer.parseInt(god));
+			ps.setInt(1, Integer.parseInt(god));
+			ps.setInt(2, Integer.parseInt(ind));
+			ps1.setInt(1, Integer.parseInt(ind));
+			ps1.setInt(2, Integer.parseInt(god));
 	        
-	        //Izvrsavamo skupove rezultata
-		    //Try/catch blok zbog moguceg cekanja u visekorisnickom okruzenju
+			//Izvrsavamo skupove rezultata
+			//Try/catch blok zbog moguceg cekanja u visekorisnickom okruzenju
 	        
-	        ResultSet rs = null;
-	        ResultSet rs1 = null;
-	        try {
+			ResultSet rs = null;
+			ResultSet rs1 = null;
+			try {
 			    rs = ps.executeQuery(); 
 			    rs1 = ps1.executeQuery();
-	        } catch (SQLException e2) {
-	        	if(e2.getErrorCode() == -911 || e2.getErrorCode() == -913){
+			} catch (SQLException e2) {
+			  if(e2.getErrorCode() == -911 || e2.getErrorCode() == -913){
 				errlabel.setText("Sacekajte sa unosom!");
 				con.rollback();
 				rs = ps.executeQuery(); 
 				rs1 = ps1.executeQuery();
 				
+			  }
 			}
-		}
 			
 			//Brisemo podatke koje je korisnik uneo kako bi mogao opet da ih unese kasnije
 			text1.setText("");
@@ -214,10 +212,10 @@ public class Diplomci
 				final String polStr = rs.getString(8);
 				final char pol = polStr.charAt(0);
 				
-			    final String imeOca = rs.getString(9);
-			    final char srIme = imeOca.charAt(0);
+				final String imeOca = rs.getString(9);
+				final char srIme = imeOca.charAt(0);
 			   
-			    //Kreiramo datum u formatu dd.mm.gggg.
+				//Kreiramo datum u formatu dd.mm.gggg.
 			   	String godina = datumRodj.substring(0, 4);
 				String mesec = datumRodj.substring(5, 7);
 				String dan = datumRodj.substring(8);
@@ -238,44 +236,44 @@ public class Diplomci
 				if(pol == 'm'){
 					
 				textarea.setText("Matematicki fakultet\n" +
-							 	 "Univerzitet u Beogradu\n" +
-							 	  "Studentski trg 16\n\n\n" +
-							 	  "\t      UVERENJE O DIPLOMIRANJU\n\n\n" +
-							 	  "Student " + ime + " " + srIme + "." + " " + prezime  + "," + 
-							 	  " sa brojem indeksa " + indint + "," + "\nrodjen u mestu " +
-							 	  mestoRodj + " " +realDatum+ " godine," + "\nupisao je studije na smeru " +
-							 	  smerNaziv + " " + godint + "." + "\ngodine." + "\nProsek studenta je " + 
-							 	  prosek + " i polozio je " + polozeno + " ESPB. " + "\n\n\n" + 
-							 	  "\t\t\t      U Beogradu" + "\n" + "\t\t\t      " + ceodatum + " " + "\n" + "\t\t\t      " 
-							 	  + vreme );
+					 	 "Univerzitet u Beogradu\n" +
+					 	  "Studentski trg 16\n\n\n" +
+					 	  "\t      UVERENJE O DIPLOMIRANJU\n\n\n" +
+						  "Student " + ime + " " + srIme + "." + " " + prezime  + "," + 
+						  " sa brojem indeksa " + indint + "," + "\nrodjen u mestu " +
+						  mestoRodj + " " +realDatum+ " godine," + "\nupisao je studije na smeru " +
+						  smerNaziv + " " + godint + "." + "\ngodine." + "\nProsek studenta je " + 
+						  prosek + " i polozio je " + polozeno + " ESPB. " + "\n\n\n" + 
+						  "\t\t\t      U Beogradu" + "\n" + "\t\t\t      " + ceodatum + " " + "\n" + "\t\t\t      " 
+						  + vreme );
 				   
 				}
 				else{
 			    textarea.setText("Matematicki fakultet\n" +
-								 "Univerzitet u Beogradu\n" +
-								 "Studentski trg 16\n\n\n" +
-								 "\t      UVERENJE O DIPLOMIRANJU\n\n\n" +
-							     "Studentkinja " + ime + " " + srIme + "." + " " + prezime  + "," + 
-								 " sa brojem indeksa " + indint + "," + "\nrodjena u mestu " +
-								 mestoRodj + " " + realDatum + " godine," + "\nupisala je studije na smeru " +
-								 smerNaziv + " " + godint + "." + "godine. " + "\nProsek studentkinje je " + 
-								 prosek + " i polozila je " + polozeno + " ESPB. " + "\n\n\n" + 
-								 "\t\t\t    U Beogradu" + "\n" + "\t\t\t    " + ceodatum + " " + "\n" + "\t\t\t    " 
-								 + vreme );
-						}
+					     "Univerzitet u Beogradu\n" +
+					     "Studentski trg 16\n\n\n" +
+					     "\t      UVERENJE O DIPLOMIRANJU\n\n\n" +
+					     "Studentkinja " + ime + " " + srIme + "." + " " + prezime  + "," + 
+					     " sa brojem indeksa " + indint + "," + "\nrodjena u mestu " +
+					     mestoRodj + " " + realDatum + " godine," + "\nupisala je studije na smeru " +
+					     smerNaziv + " " + godint + "." + "godine. " + "\nProsek studentkinje je " + 
+					     prosek + " i polozila je " + polozeno + " ESPB. " + "\n\n\n" + 
+					     "\t\t\t    U Beogradu" + "\n" + "\t\t\t    " + ceodatum + " " + "\n" + "\t\t\t    " 
+					     + vreme );
+				}
 				
 				//Kreiramo drugi panel na kome ce se ispisati uverenje o diplomiranom studentu
 				final JFrame frame2 = new JFrame();
 				final JPanel panel2 = new JPanel();
-			    final JButton dugme2 = new JButton();
+				final JButton dugme2 = new JButton();
 			    
 				dugme2.setText("Stampaj");
-			    frame2.setSize(450, 350);
-				frame2.setTitle("V03P2");
+				frame2.setSize(450, 350);
+				frame2.setTitle("Uverenje o diplomiranju");
 				panel2.setSize(400, 250);
 				textarea.setEditable(false);
 				Dimension d = new Dimension(400, 270);
-			    textarea.setPreferredSize(d);
+				textarea.setPreferredSize(d);
 			    
 				panel2.add(textarea);
 				panel2.add(dugme2);
@@ -289,7 +287,7 @@ public class Diplomci
 				final String strUverenje = new String(textarea.getText()); 
 				
 				//Definisemo akciju pri kliku na dugme za stampanje izvestaja 
-			    ActionListener a1 = new ActionListener() {
+				ActionListener a1 = new ActionListener() {
 					public void actionPerformed(ActionEvent e1) {
 						 if (e1.getSource() == dugme2){
 									
@@ -316,27 +314,27 @@ public class Diplomci
 				}
 			
 			 //Kreiramo treci panel na kome se izlistati nepolozeni predmeti studenta
-	         final JFrame frame3 = new JFrame();
+			 final JFrame frame3 = new JFrame();
 			 final JLabel label3 = new JLabel("Nepolozeni predmeti");
-	    	 final JPanel panel3 = new JPanel();
-	    	 final JTextArea textarea2 = new JTextArea();
+			 final JPanel panel3 = new JPanel();
+			 final JTextArea textarea2 = new JTextArea();
 			
 			 frame3.setSize(350, 350);
-			 frame3.setTitle("V03P3");
+			 frame3.setTitle("Spisak nepolozenih predmeta");
 			 Dimension d = new Dimension(280, 280);
-		     textarea2.setPreferredSize(d);
-		     textarea2.setEditable(false);
+			 textarea2.setPreferredSize(d);
+			 textarea2.setEditable(false);
 		    
-		     panel3.add(label3);
-		     panel3.add(textarea2);
-		     frame3.add(panel3);
-		     panel3.setVisible(true);
+			 panel3.add(label3);
+			 panel3.add(textarea2);
+			 frame3.add(panel3);
+			 panel3.setVisible(true);
 		     
-		     frame3.setResizable(false);
-		     frame3.setLocationRelativeTo(null);
+			 frame3.setResizable(false);
+			 frame3.setLocationRelativeTo(null);
 		    
 		     
-			while(rs1.next()){
+			 while(rs1.next()){
 				
 				frame3.setVisible(true);
 			    				
@@ -345,8 +343,8 @@ public class Diplomci
 				predmeti.add(rs1.getString(4));
 				String[] predstr = (String[]) predmeti.toArray(new String[predmeti.size()]);
 				   
-		         //u petlji nadovezujemo nazive predmeta i pravimo spisak 
-				  for(int i=0; i<predstr.length; i++){
+				//u petlji nadovezujemo nazive predmeta i pravimo spisak 
+				for(int i=0; i<predstr.length; i++){
 					  textarea2.append(Integer.toString(textarea2.getLineCount()) + ". ");
 					  textarea2.append(predstr[i]);
 					  textarea2.append("\n");
@@ -359,13 +357,13 @@ public class Diplomci
 			}
 			
 			//Proveravamo da li smo nasli studenta
-		     if(checker == 0){
-		    	 errlabel.setText("Student nije pronadjen!");	 
-		     }
+			if(checker == 0){
+			  errlabel.setText("Student nije pronadjen!");	 
+			}
 		 
 		   
-		    con.commit();
-		    //zatvaramo oba skupa rezultata i konekciju
+			con.commit();
+			//zatvaramo oba skupa rezultata i konekciju
 			rs.close();
 			rs1.close();
 			con.close();
